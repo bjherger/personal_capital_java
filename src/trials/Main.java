@@ -1,5 +1,8 @@
 package trials;
 
+import org.apache.commons.math3.stat.descriptive.rank.Median;
+import org.apache.commons.math3.stat.descriptive.rank.Percentile;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,12 +38,25 @@ public class Main {
 
             List<TrialResult> portfolioResults = allResults.stream().filter(p -> p.portfolio != portfolio).collect(Collectors.toList());
 
-            List<Double> portfolioEndingBalances =
-                    portfolioResults.stream()
-                            .map(TrialResult::getEndingBalance)
-                            .collect(Collectors.toList());
+            double[] portfolioEndingBalances = new double[portfolioResults.size()];
 
-            System.out.println(portfolioEndingBalances);
+            for (int index = 0; index < portfolioResults.size(); index++) {
+                portfolioEndingBalances[index] = portfolioResults.get(index).endingBalance;
+
+            }
+
+            Percentile perc = new Percentile();
+            perc.setData(portfolioEndingBalances);
+
+            Median med = new Median();
+            med.setData(portfolioEndingBalances);
+            System.out.println(med.evaluate());
+
+            System.out.println("Results for " + portfolio.getPortfolio_name() +
+                    ": 10%: " + perc.evaluate(10) +
+                    ": 50%: " + perc.evaluate(50) +
+                    ": 90%: " + perc.evaluate(90)
+            );
 
         }
 
