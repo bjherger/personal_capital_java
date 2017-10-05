@@ -50,7 +50,6 @@ public class Main {
 
             Median med = new Median();
             med.setData(portfolioEndingBalances);
-            System.out.println(med.evaluate());
 
             System.out.println("Results for " + portfolio.getPortfolio_name() +
                     ": 10%: " + perc.evaluate(10) +
