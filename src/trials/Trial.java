@@ -35,7 +35,6 @@ public class Trial {
 
 
         // Loop through portfolios
-
         for (int currentPortfolioIndex = 0; currentPortfolioIndex < portfolios.length; currentPortfolioIndex++) {
             Portfolio currentPortfolio = portfolios[currentPortfolioIndex];
             // Set up variables for current run
