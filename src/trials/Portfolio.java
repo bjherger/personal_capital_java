@@ -28,7 +28,5 @@ public class Portfolio {
         return returnMean;
     }
 
-    public double getReturnVar() {
-        return returnVar;
-    }
+    public double getReturnVar() { return returnVar; }
 }

@@ -1,13 +1,17 @@
 package trials;
 
+import org.apache.commons.math3.stat.descriptive.rank.Percentile;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
 
     public static void main(String[] args) {
-	    // Variables
+
+        // Reference variables
         int numTrials = 10000;
         int numYears = 20;
         Double startingBalance = 100000.00;
@@ -21,7 +25,7 @@ public class Main {
 
         List<TrialResult> allResults = new ArrayList<TrialResult>();
 
-
+        // Run trials
         for (int trialID = 0; trialID < numTrials; trialID++) {
             Trial trial = new Trial(numYears, startingBalance, annualInflation, portfolios);
 
@@ -29,7 +33,31 @@ public class Main {
 
         }
 
-        System.out.println(allResults);
+        // Summarize trials
+        // Iterate through portfolios
+        for (Portfolio portfolio : portfolios){
+
+            // Subset to results for this portfolio
+            List<TrialResult> portfolioResults = allResults.stream().filter(p -> p.portfolio != portfolio).collect(Collectors.toList());
+
+            // Extract ending balances
+            double[] portfolioEndingBalances = new double[portfolioResults.size()];
+
+            for (int index = 0; index < portfolioResults.size(); index++) {
+                portfolioEndingBalances[index] = portfolioResults.get(index).endingBalance;
+            }
+
+            //Compute and output percentiles
+            Percentile perc = new Percentile();
+            perc.setData(portfolioEndingBalances);
+
+            System.out.println("Results for " + portfolio.getPortfolio_name() +
+                    ": 10%: " + perc.evaluate(10) +
+                    ": 50%: " + perc.evaluate(50) +
+                    ": 90%: " + perc.evaluate(90)
+            );
+
+        }
 
     }
 }
