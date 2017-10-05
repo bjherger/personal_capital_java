@@ -3,6 +3,7 @@ package trials;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -21,7 +22,7 @@ public class Main {
 
         List<TrialResult> allResults = new ArrayList<TrialResult>();
 
-
+        // Run trials
         for (int trialID = 0; trialID < numTrials; trialID++) {
             Trial trial = new Trial(numYears, startingBalance, annualInflation, portfolios);
 
@@ -29,7 +30,19 @@ public class Main {
 
         }
 
-        System.out.println(allResults);
+        // Summarize trials
+        for (Portfolio portfolio : portfolios){
+
+            List<TrialResult> portfolioResults = allResults.stream().filter(p -> p.portfolio != portfolio).collect(Collectors.toList());
+
+            List<Double> portfolioEndingBalances =
+                    portfolioResults.stream()
+                            .map(TrialResult::getEndingBalance)
+                            .collect(Collectors.toList());
+
+            System.out.println(portfolioEndingBalances);
+
+        }
 
     }
 }

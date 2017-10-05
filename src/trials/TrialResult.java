@@ -25,4 +25,8 @@ public class TrialResult {
         this.annualBalances = annualBalances;
         this.endingBalance = annualBalances[annualBalances.length -1];
     }
+
+    public Double getEndingBalance() {
+        return endingBalance;
+    }
 }
